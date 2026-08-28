@@ -1,26 +1,138 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Палитра построена вокруг названия компании: «қорған» — крепость, защита.
+  Отсюда цвет тянь-шаньской ели вместо привычного юридического тёмно-синего
+  и бирюза вместо золота: в местной традиции сине-зелёный — оберегающий цвет.
+  Никакой «премиальной» позолоты — ТЗ прямо запрещает обещания и пафос.
+*/
+@theme {
+  --color-ink: #0e1f1b;
+  --color-ink-soft: #43574f;
+  --color-ink-faint: #6d7f78;
+  --color-paper: #edf1ee;
+  --color-card: #ffffff;
+  --color-shield: #12695c;
+  --color-shield-dark: #0a4a41;
+  --color-shield-soft: #d6e7e2;
+  --color-line: #ccd9d3;
+  /* Только для срочности в админке — это сигнал, а не украшение. */
+  --color-signal: #b4571f;
+  --color-signal-soft: #f7e6da;
+
+  --radius-card: 14px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-golos), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Клавиатурная навигация должна быть видна — это не опция. */
+  :focus-visible {
+    outline: 2px solid var(--color-shield);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background: var(--color-shield);
+    color: #fff;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /*
+    Подпись проекта: «страты» — слои крепостного вала в разрезе.
+    Используются как разделитель разделов, поэтому мотив крепости присутствует
+    структурно, а не иллюстрацией с весами и молотком.
+  */
+  .strata {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .strata span {
+    display: block;
+    height: 2px;
+    background: var(--color-shield);
+    opacity: 0.85;
+  }
+
+  .strata span:nth-child(1) {
+    width: 56px;
+  }
+  .strata span:nth-child(2) {
+    width: 38px;
+    opacity: 0.6;
+  }
+  .strata span:nth-child(3) {
+    width: 22px;
+    opacity: 0.35;
+  }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-shield);
+  }
+}
+
+/* Появление секций при прокрутке. Без фанатизма: один короткий сдвиг вверх. */
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
