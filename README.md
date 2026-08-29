@@ -5,6 +5,10 @@
 
 Три части — один проект, одна база и одна общая таблица заявок.
 
+**Сайт:** https://qorgan-legal.vercel.app
+**Админка:** https://qorgan-legal.vercel.app/admin
+**Бот:** https://t.me/qorgan_legal_kz_bot
+
 ---
 
 ## Быстрый старт
