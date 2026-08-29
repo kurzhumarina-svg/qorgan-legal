@@ -14,7 +14,7 @@ export default function ThanksPage() {
     <>
       <main className="flex flex-1 items-center justify-center px-5 py-24">
         <div className="w-full max-w-lg rounded-card border border-line bg-card p-8 text-center sm:p-10">
-          <span className="strata mx-auto w-fit items-center" aria-hidden="true">
+          <span className="dialog-mark mx-auto w-fit items-center" aria-hidden="true">
             <span />
             <span />
             <span />

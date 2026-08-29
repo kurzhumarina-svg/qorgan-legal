@@ -1,30 +1,43 @@
 @import "tailwindcss";
 
 /*
-  Палитра построена вокруг названия компании: «қорған» — крепость, защита.
-  Отсюда цвет тянь-шаньской ели вместо привычного юридического тёмно-синего
-  и бирюза вместо золота: в местной традиции сине-зелёный — оберегающий цвет.
-  Никакой «премиальной» позолоты — ТЗ прямо запрещает обещания и пафос.
+  Направление «Разговор».
+
+  Сайт юридической компании обычно выглядит как брошюра: офис, костюмы, обещания.
+  Но продукт здесь про другое — человек в неприятной ситуации пытается подобрать
+  слова, а ему спокойно отвечают. Поэтому страница построена как диалог, а не
+  как витрина: реплики клиента и ответы компании набраны разными гарнитурами,
+  как два голоса в разговоре.
+
+  Тёплый серый фон и холодный сигнальный синий: человеческое основание,
+  собранный и точный акцент.
 */
 @theme {
-  --color-ink: #0e1f1b;
-  --color-ink-soft: #43574f;
-  --color-ink-faint: #6d7f78;
-  --color-paper: #edf1ee;
+  --color-paper: #efeeea;
   --color-card: #ffffff;
-  --color-shield: #12695c;
-  --color-shield-dark: #0a4a41;
-  --color-shield-soft: #d6e7e2;
-  --color-line: #ccd9d3;
+  --color-ink: #1c1a17;
+  --color-ink-soft: #5e584f;
+  --color-ink-faint: #8b8478;
+
+  /* Голос компании: кнопки, ссылки, ответные реплики. */
+  --color-shield: #2547e8;
+  --color-shield-dark: #1a35b4;
+  --color-shield-soft: #e1e6ff;
+
+  /* Реплика клиента — тёплый нейтральный, чтобы голоса различались цветом. */
+  --color-client: #e5e2da;
+
+  --color-line: #dcd8ce;
+
   /* Только для срочности в админке — это сигнал, а не украшение. */
   --color-signal: #b4571f;
   --color-signal-soft: #f7e6da;
 
-  --radius-card: 14px;
+  --radius-card: 12px;
 }
 
 @theme inline {
-  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-literata), Georgia, serif;
   --font-sans: var(--font-golos), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -40,15 +53,15 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Заголовки — голосом компании: серифная гарнитура, спокойная, без нажима. */
   h1,
   h2,
   h3 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.011em;
     text-wrap: balance;
   }
 
-  /* Клавиатурная навигация должна быть видна — это не опция. */
   :focus-visible {
     outline: 2px solid var(--color-shield);
     outline-offset: 3px;
@@ -63,46 +76,64 @@
 
 @layer components {
   /*
-    Подпись проекта: «страты» — слои крепостного вала в разрезе.
-    Используются как разделитель разделов, поэтому мотив крепости присутствует
-    структурно, а не иллюстрацией с весами и молотком.
+    Подпись проекта: две реплики. Верхняя короткая и нейтральная — вопрос клиента,
+    нижняя длиннее и синяя — ответ компании. Мотив диалога в миниатюре.
   */
-  .strata {
+  .dialog-mark {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
   }
 
-  .strata span {
+  .dialog-mark span {
     display: block;
-    height: 2px;
-    background: var(--color-shield);
-    opacity: 0.85;
+    height: 3px;
+    border-radius: 2px;
   }
 
-  .strata span:nth-child(1) {
-    width: 56px;
+  .dialog-mark span:nth-child(1) {
+    width: 18px;
+    background: var(--color-ink-faint);
   }
-  .strata span:nth-child(2) {
-    width: 38px;
-    opacity: 0.6;
+
+  .dialog-mark span:nth-child(2) {
+    width: 30px;
+    background: var(--color-shield);
   }
-  .strata span:nth-child(3) {
-    width: 22px;
-    opacity: 0.35;
+
+  /* Третий элемент в разметке остаётся, но в этом направлении он лишний. */
+  .dialog-mark span:nth-child(3) {
+    display: none;
   }
 
   .eyebrow {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     font-size: 0.6875rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-shield);
   }
+
+  /* Реплика клиента: то, что человек говорит своими словами. */
+  .bubble-client {
+    background: var(--color-client);
+    border-radius: 14px 14px 14px 4px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+  }
+
+  /* Ответ компании — серифом, как и заголовки: это её голос. */
+  .bubble-firm {
+    background: var(--color-shield);
+    color: #fff;
+    border-radius: 14px 14px 4px 14px;
+    padding: 0.85rem 1.1rem;
+    font-family: var(--font-display);
+  }
 }
 
-/* Появление секций при прокрутке. Без фанатизма: один короткий сдвиг вверх. */
 @layer utilities {
   .reveal {
     opacity: 0;

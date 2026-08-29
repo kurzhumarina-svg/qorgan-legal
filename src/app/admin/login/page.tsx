@@ -15,7 +15,7 @@ export default async function AdminLoginPage({
   return (
     <main className="flex flex-1 items-center justify-center px-5 py-24">
       <div className="w-full max-w-sm">
-        <span className="strata" aria-hidden="true">
+        <span className="dialog-mark" aria-hidden="true">
           <span />
           <span />
           <span />

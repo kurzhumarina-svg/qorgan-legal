@@ -35,11 +35,11 @@ export function Services() {
               <h3 className="text-lg leading-snug font-semibold">{service.title}</h3>
               <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">{service.summary}</p>
 
+              {/* Примеры — это дословные фразы клиентов, поэтому и выглядят как реплики. */}
               <ul className="mt-5 flex-1 space-y-2 border-t border-line pt-5">
                 {service.examples.map((example) => (
-                  <li key={example} className="flex gap-2.5 text-[13px] text-ink-soft">
-                    <span aria-hidden="true" className="mt-2 h-px w-3 shrink-0 bg-shield" />
-                    <span>«{example}»</span>
+                  <li key={example} className="bubble-client text-[13px] leading-relaxed">
+                    {example}
                   </li>
                 ))}
               </ul>

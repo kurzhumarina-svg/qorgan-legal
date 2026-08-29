@@ -7,12 +7,12 @@ import { company, type TopicSlug } from '@/lib/content';
 import { useLeadForm } from './lead-form-context';
 
 /**
- * Первый экран.
+ * Первый экран как начало разговора.
  *
- * Обычно здесь ставят лозунг и две кнопки. Но единственная задача этой страницы —
- * помочь человеку описать ситуацию, поэтому главный элемент экрана и есть само
- * поле ввода. Примеры рядом — не украшение: они подставляют и текст, и тему,
- * то есть делают ровно то, что требует ТЗ от кнопок услуг.
+ * Обычный лендинг открывается лозунгом и кнопкой. Здесь единственная задача
+ * страницы — разговорить человека, поэтому экран показывает сам приём:
+ * реальная реплика клиента, спокойный ответ компании и следующая очередь —
+ * поле, в котором продолжает уже посетитель.
  */
 
 const examples: { label: string; topic: TopicSlug; text: string }[] = [
@@ -43,83 +43,98 @@ export function Hero() {
   const [text, setText] = useState('');
 
   return (
-    <section id="top" className="bg-ink text-paper">
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 md:py-24 lg:grid-cols-[1fr_minmax(0,520px)] lg:gap-16">
-        <div className="max-w-xl">
-          <p className="eyebrow !text-shield-soft">Юридическая помощь · Алматы</p>
+    <section id="top" className="mx-auto max-w-6xl px-5 py-14 md:py-20">
+      <div className="grid gap-12 lg:grid-cols-[1fr_minmax(0,540px)] lg:gap-16">
+        <div className="max-w-xl lg:pt-6">
+          <p className="eyebrow">Юридическая помощь · {company.city}</p>
 
-          <h1 className="mt-5 text-4xl leading-[1.08] font-semibold sm:text-5xl">
-            Опишите ситуацию своими словами
+          <h1 className="mt-5 text-4xl leading-[1.12] font-medium sm:text-[3.25rem]">
+            Расскажите, как есть
           </h1>
 
-          <p className="mt-6 text-lg leading-relaxed text-paper/75">
-            Без юридических формулировок и без полного пакета документов. Мы определим
-            направление, зададим пару уточняющих вопросов и передадим вопрос юристу.
+          <p className="mt-6 text-lg leading-relaxed text-ink-soft">
+            Без юридических формулировок и без папки документов. Поймём, к какому юристу вы
+            относитесь, зададим пару уточнений и передадим вопрос — вы получите понятный
+            первый шаг.
           </p>
 
-          <p className="mt-8 max-w-md border-l-2 border-shield pl-4 text-sm leading-relaxed text-paper/60">
+          <p className="mt-8 max-w-md border-l-2 border-line pl-4 text-sm leading-relaxed text-ink-faint">
             Мы не обещаем исход дела и не называем статьи закона наугад. Стоимость и порядок
-            работы обсуждаем после первичного разбора ситуации.
+            работы обсуждаем после первичного разбора.
           </p>
         </div>
 
-        <div className="rounded-[18px] bg-card p-6 text-ink shadow-[0_24px_60px_-30px_rgba(0,0,0,0.6)] sm:p-7">
-          <label htmlFor="hero-situation" className="block text-sm font-medium text-ink">
-            Что произошло?
-          </label>
+        {/* Разговор: как это обычно начинается и чем отвечают. */}
+        <div className="rounded-[18px] border border-line bg-card p-5 sm:p-6">
+          <div className="flex flex-col gap-3">
+            <div className="bubble-client max-w-[85%] text-[15px] leading-relaxed">
+              Дал знакомому деньги под расписку, обещал вернуть в марте. Не отдаёт и перестал
+              отвечать на сообщения.
+            </div>
 
-          <textarea
-            id="hero-situation"
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-            rows={5}
-            placeholder="Например: занял знакомому деньги под расписку, обещал вернуть в марте — до сих пор не отдал и не отвечает на сообщения."
-            className="mt-3 w-full resize-y rounded-[10px] border border-line bg-paper/40 p-3.5 text-[15px] leading-relaxed text-ink outline-none placeholder:text-ink-faint focus:border-shield focus:bg-white"
-          />
+            <div className="bubble-firm ml-auto max-w-[90%] text-[15px] leading-relaxed">
+              Это вопрос по взысканию задолженности. Сейчас важнее всего расписка и переписка —
+              они подтверждают передачу денег. Уточню пару деталей и передам юристу.
+            </div>
+          </div>
 
-          <p className="mt-5 text-xs text-ink-faint">Или начните с похожей ситуации:</p>
+          <div className="mt-6 border-t border-line pt-5">
+            <label htmlFor="hero-situation" className="block text-sm font-medium">
+              Теперь ваша очередь
+            </label>
 
-          <div className="mt-2.5 flex flex-wrap gap-2">
-            {examples.map((example) => (
+            <textarea
+              id="hero-situation"
+              value={text}
+              onChange={(event) => setText(event.target.value)}
+              rows={4}
+              placeholder="Опишите, что произошло, своими словами."
+              className="mt-3 w-full resize-y rounded-[12px] border border-line bg-paper/50 p-3.5 text-[15px] leading-relaxed text-ink outline-none placeholder:text-ink-faint focus:border-shield focus:bg-white"
+            />
+
+            <p className="mt-4 text-xs text-ink-faint">Или начните с похожей ситуации:</p>
+
+            <div className="mt-2.5 flex flex-wrap gap-2">
+              {examples.map((example) => (
+                <button
+                  key={example.topic}
+                  type="button"
+                  onClick={() => prefillForm({ topic: example.topic, description: example.text })}
+                  className="rounded-full border border-line bg-paper/60 px-3.5 py-1.5 text-[13px] text-ink-soft transition-colors hover:border-shield hover:bg-shield-soft hover:text-shield"
+                >
+                  {example.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
               <button
-                key={example.topic}
                 type="button"
-                onClick={() => prefillForm({ topic: example.topic, description: example.text })}
-                className="rounded-full border border-line bg-white px-3.5 py-1.5 text-[13px] text-ink-soft transition-colors hover:border-shield hover:bg-shield-soft hover:text-shield"
+                onClick={() => prefillForm({ description: text.trim() || undefined })}
+                className="flex-1 rounded-full bg-shield px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-shield-dark"
               >
-                {example.label}
+                Описать ситуацию
               </button>
-            ))}
-          </div>
+              <a
+                href="#form"
+                className="flex-1 rounded-full border border-line px-5 py-3 text-center text-sm font-medium transition-colors hover:border-shield hover:text-shield"
+              >
+                Записаться на консультацию
+              </a>
+            </div>
 
-          <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-            <button
-              type="button"
-              onClick={() => prefillForm({ description: text.trim() || undefined })}
-              className="flex-1 rounded-full bg-shield px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-shield-dark"
-            >
-              Описать ситуацию
-            </button>
-            <a
-              href="#form"
-              className="flex-1 rounded-full border border-line px-5 py-3 text-center text-sm font-medium text-ink transition-colors hover:border-shield hover:text-shield"
-            >
-              Записаться на консультацию
-            </a>
+            <p className="mt-4 text-center text-[13px] text-ink-faint">
+              Удобнее в мессенджере?{' '}
+              <a
+                href={company.telegramHref}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-shield underline-offset-4 hover:underline"
+              >
+                Напишите помощнику в Telegram
+              </a>
+            </p>
           </div>
-
-          {/* Второй канал: тот же приём, но в мессенджере. Заявка попадёт в тот же список. */}
-          <p className="mt-4 text-center text-[13px] text-ink-faint">
-            Удобнее в мессенджере?{' '}
-            <a
-              href={company.telegramHref}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium text-shield underline-offset-4 hover:underline"
-            >
-              Напишите помощнику в Telegram
-            </a>
-          </p>
         </div>
       </div>
     </section>

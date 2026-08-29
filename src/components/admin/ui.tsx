@@ -59,7 +59,7 @@ export function AdminShell({
       <header className="border-b border-line bg-card">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <span className="strata" aria-hidden="true">
+            <span className="dialog-mark" aria-hidden="true">
               <span />
               <span />
               <span />

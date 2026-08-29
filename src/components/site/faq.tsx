@@ -25,7 +25,10 @@ export function Faq() {
                 +
               </span>
             </summary>
-            <p className="mt-3 pr-8 text-sm leading-relaxed text-ink-soft">{item.a}</p>
+            {/* Ответ набран серифом — это голос компании, как и в заголовках. */}
+            <p className="font-display mt-3 pr-8 text-[15px] leading-relaxed text-ink-soft">
+              {item.a}
+            </p>
           </details>
         ))}
       </div>

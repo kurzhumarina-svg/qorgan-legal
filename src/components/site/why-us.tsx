@@ -15,7 +15,7 @@ export function WhyUs() {
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
             {advantages.map((item) => (
               <div key={item.title}>
-                <span className="strata mb-4" aria-hidden="true">
+                <span className="dialog-mark mb-4" aria-hidden="true">
                   <span />
                   <span />
                   <span />
