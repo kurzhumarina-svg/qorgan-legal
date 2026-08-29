@@ -137,7 +137,7 @@ export function ContactForm() {
               className="flex items-center justify-between rounded-[10px] border border-paper/20 px-4 py-3 text-sm transition-colors hover:border-shield-soft hover:bg-white/5"
             >
               <span>Написать в WhatsApp</span>
-              <span className="text-paper/60">{company.phone}</span>
+              <span className="text-paper/60">{company.whatsappPhone}</span>
             </a>
             <a
               href={company.telegramHref}

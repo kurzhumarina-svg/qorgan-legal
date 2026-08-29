@@ -1,5 +1,6 @@
 import { ContactForm } from '@/components/site/contact-form';
 import { Faq } from '@/components/site/faq';
+import { FloatingContact } from '@/components/site/floating-contact';
 import { Hero } from '@/components/site/hero';
 import { LeadFormProvider } from '@/components/site/lead-form-context';
 import { Process } from '@/components/site/process';
@@ -24,6 +25,7 @@ export default function HomePage() {
         <ContactForm />
       </main>
       <SiteFooter />
+      <FloatingContact />
     </LeadFormProvider>
   );
 }
