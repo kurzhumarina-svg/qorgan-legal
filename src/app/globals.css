@@ -9,36 +9,38 @@
   как витрина: реплики клиента и ответы компании набраны разными гарнитурами,
   как два голоса в разговоре.
 
-  Тёплый серый фон и холодный сигнальный синий: человеческое основание,
-  собранный и точный акцент.
+  Тёплый песочный фон и глубокий винный акцент: цвет корешков в юридической
+  библиотеке, тёплый и негромкий. Синий и латунь сознательно не используются —
+  они заняты другими проектами автора.
 */
+
 @theme {
-  --color-paper: #efeeea;
+  --color-paper: #f0e9e4;
   --color-card: #ffffff;
-  --color-ink: #1c1a17;
-  --color-ink-soft: #5e584f;
-  --color-ink-faint: #8b8478;
+  --color-ink: #241c1a;
+  --color-ink-soft: #6b5c55;
+  --color-ink-faint: #9a8b83;
 
   /* Голос компании: кнопки, ссылки, ответные реплики. */
-  --color-shield: #2547e8;
-  --color-shield-dark: #1a35b4;
-  --color-shield-soft: #e1e6ff;
+  --color-shield: #8c2f39;
+  --color-shield-dark: #6e2029;
+  --color-shield-soft: #f5e3e4;
 
   /* Реплика клиента — тёплый нейтральный, чтобы голоса различались цветом. */
-  --color-client: #e5e2da;
+  --color-client: #e4dbd2;
 
-  --color-line: #dcd8ce;
+  --color-line: #ded2c9;
 
-  /* Только для срочности в админке — это сигнал, а не украшение. */
-  --color-signal: #b4571f;
-  --color-signal-soft: #f7e6da;
+  /* Срочность в админке. Охра, а не красный: он занят голосом компании. */
+  --color-signal: #9a6b18;
+  --color-signal-soft: #f6ead6;
 
   --radius-card: 12px;
 }
 
 @theme inline {
-  --font-display: var(--font-literata), Georgia, serif;
-  --font-sans: var(--font-golos), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-voice), Georgia, serif;
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -77,7 +79,7 @@
 @layer components {
   /*
     Подпись проекта: две реплики. Верхняя короткая и нейтральная — вопрос клиента,
-    нижняя длиннее и синяя — ответ компании. Мотив диалога в миниатюре.
+    нижняя длиннее и винная — ответ компании. Мотив диалога в миниатюре.
   */
   .dialog-mark {
     display: flex;
