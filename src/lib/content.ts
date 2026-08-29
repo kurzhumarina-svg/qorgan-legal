@@ -13,6 +13,10 @@ export const company = {
   address: 'ул. Тимирязева, 42, офис 315',
   phone: '+7 700 000 37 37',
   phoneHref: '+77000003737',
+  /** wa.me принимает номер без плюса и разделителей. */
+  whatsappHref: 'https://wa.me/77000003737',
+  telegramBot: 'qorgan_legal_kz_bot',
+  telegramHref: 'https://t.me/qorgan_legal_kz_bot',
   email: 'hello@qorgan-legal.kz',
   format: 'Первичный вопрос → консультация юриста → согласование дальнейшей работы',
 } as const;

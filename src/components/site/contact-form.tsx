@@ -121,19 +121,40 @@ export function ContactForm() {
             только суть вопроса и контакт для связи.
           </p>
 
-          <dl className="mt-10 space-y-5 text-sm">
+          {/* Крупные кликабельные контакты: с телефона по ним звонят и пишут в один тап. */}
+          <div className="mt-8 flex flex-col gap-2.5">
+            <a
+              href={`tel:${company.phoneHref}`}
+              className="flex items-center justify-between rounded-[10px] border border-paper/20 px-4 py-3 text-sm transition-colors hover:border-shield-soft hover:bg-white/5"
+            >
+              <span>Позвонить</span>
+              <span className="text-paper/60">{company.phone}</span>
+            </a>
+            <a
+              href={company.whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-between rounded-[10px] border border-paper/20 px-4 py-3 text-sm transition-colors hover:border-shield-soft hover:bg-white/5"
+            >
+              <span>Написать в WhatsApp</span>
+              <span className="text-paper/60">{company.phone}</span>
+            </a>
+            <a
+              href={company.telegramHref}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-between rounded-[10px] border border-paper/20 px-4 py-3 text-sm transition-colors hover:border-shield-soft hover:bg-white/5"
+            >
+              <span>Telegram-помощник</span>
+              <span className="text-paper/60">@{company.telegramBot}</span>
+            </a>
+          </div>
+
+          <dl className="mt-8 space-y-5 text-sm">
             <div>
               <dt className="text-paper/50">Адрес</dt>
               <dd className="mt-1">
                 {company.city}, {company.address}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-paper/50">Телефон</dt>
-              <dd className="mt-1">
-                <a href={`tel:${company.phoneHref}`} className="hover:text-shield-soft">
-                  {company.phone}
-                </a>
               </dd>
             </div>
             <div>

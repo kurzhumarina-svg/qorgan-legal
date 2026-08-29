@@ -20,6 +20,24 @@ export function SiteFooter() {
           <a href={`mailto:${company.email}`} className="block hover:text-shield">
             {company.email}
           </a>
+          <div className="mt-2 flex gap-4">
+            <a
+              href={company.whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-shield"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={company.telegramHref}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-shield"
+            >
+              Telegram
+            </a>
+          </div>
         </div>
       </div>
 

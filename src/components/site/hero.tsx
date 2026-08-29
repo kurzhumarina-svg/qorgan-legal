@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import type { TopicSlug } from '@/lib/content';
+import { company, type TopicSlug } from '@/lib/content';
 
 import { useLeadForm } from './lead-form-context';
 
@@ -107,6 +107,19 @@ export function Hero() {
               Записаться на консультацию
             </a>
           </div>
+
+          {/* Второй канал: тот же приём, но в мессенджере. Заявка попадёт в тот же список. */}
+          <p className="mt-4 text-center text-[13px] text-ink-faint">
+            Удобнее в мессенджере?{' '}
+            <a
+              href={company.telegramHref}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-shield underline-offset-4 hover:underline"
+            >
+              Напишите помощнику в Telegram
+            </a>
+          </p>
         </div>
       </div>
     </section>
