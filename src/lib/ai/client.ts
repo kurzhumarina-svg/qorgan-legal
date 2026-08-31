@@ -22,12 +22,21 @@ const HISTORY_LIMIT = 20;
 /** Паузы между повторами, мс. Бесплатные пулы моделей отдают 429 регулярно. */
 const RETRY_DELAYS_MS = [1500, 5000, 12000];
 
+/**
+ * Предельный срок на весь перебор моделей и повторов.
+ *
+ * У функции на хостинге есть свой лимит жизни (у нас 60 с). Если перебирать
+ * дольше, запрос обрывается по таймауту и клиент не получает вообще ничего —
+ * бот просто молчит. Лучше сдаться раньше и ответить честной ошибкой.
+ */
+const TOTAL_BUDGET_MS = 40_000;
+
 let cached: OpenAI | null = null;
 
 function client(): OpenAI {
   if (!cached) {
-    const apiKey = process.env.AI_API_KEY;
-    const baseURL = process.env.AI_BASE_URL;
+    const apiKey = process.env.AI_API_KEY?.trim();
+    const baseURL = process.env.AI_BASE_URL?.trim();
 
     if (!apiKey || !baseURL) {
       throw new Error(
@@ -44,7 +53,10 @@ function client(): OpenAI {
 
 /** Основная модель и, через запятую, запасные — на случай перегрузки основной. */
 function models(): string[] {
-  const primary = process.env.AI_MODEL;
+  // Обрезаем пробелы и переносы: при вставке значения в панель хостинга
+  // в конец часто попадает невидимый перенос строки, и имя модели
+  // перестаёт совпадать — провайдер отвечает «нет такой модели».
+  const primary = process.env.AI_MODEL?.trim();
   if (!primary) {
     throw new Error('Не задана AI_MODEL. Список доступных моделей: npm run ai:models');
   }
@@ -131,9 +143,15 @@ async function callModel(
   ];
 
   let lastError: unknown;
+  const deadline = Date.now() + TOTAL_BUDGET_MS;
 
   // Сначала перебираем модели, внутри каждой — повторы с нарастающей паузой.
   for (const model of models()) {
+    if (Date.now() >= deadline) {
+      console.warn('[ai] время вышло, перебор моделей прекращён');
+      break;
+    }
+
     for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt += 1) {
       try {
         return await requestCompletion(model, messages);
@@ -143,6 +161,9 @@ async function callModel(
         if (!isTransient(error) || attempt === RETRY_DELAYS_MS.length) break;
 
         const wait = retryAfterMs(error) ?? RETRY_DELAYS_MS[attempt];
+        // Ждать дольше срока бессмысленно: ответ всё равно не успеет уйти.
+        if (Date.now() + wait >= deadline) break;
+
         console.warn(`[ai] ${model}: временная ошибка, повтор через ${wait} мс`);
         await sleep(wait);
       }
