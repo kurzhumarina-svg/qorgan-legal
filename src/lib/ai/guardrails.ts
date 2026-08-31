@@ -7,7 +7,18 @@
  * персональные данные.
  */
 
-export type Violation = 'law_reference' | 'outcome_promise' | 'sensitive_data';
+export type Violation =
+  | 'law_reference'
+  | 'outcome_promise'
+  | 'sensitive_data'
+  | 'reasoning_leak';
+
+/**
+ * Длина ответа, после которой это уже не реплика в переписке.
+ * Промпт просит 2–5 предложений; всё, что заметно длиннее, — почти всегда
+ * вывалившиеся наружу рассуждения модели.
+ */
+const MAX_REPLY_LENGTH = 900;
 
 type Rule = { id: Violation; label: string; pattern: RegExp };
 
@@ -32,6 +43,14 @@ const RULES: Rule[] = [
     pattern:
       /(?:укажите|пришлите|отправьте|напишите|назовите|введите|скиньте|предоставьте)[^.?!\n]{0,60}(?:ИИН|номер\s+паспорта|паспортны|удостоверени[яе]\s+личности|номер\s+карты|реквизиты\s+карты|CVV|пин-?код)/i,
   },
+  {
+    id: 'reasoning_leak',
+    label: 'служебные рассуждения в ответе клиенту',
+    // Модели-«рассуждатели» иногда печатают ход мыслей прямо в ответ: цитируют
+    // инструкцию и называют поля формы. Клиент такого видеть не должен.
+    pattern:
+      /create_lead|clientType|hasDocuments|has_documents|contact_method|contactMethod|(?:urgency|topic)\s*[=:]\s*\w|по\s+инструкции|инструкция\s+говорит|нужно\s+определить\s+направление|мне\s+нужно\s+(?:получить|уточнить)\s+имя/i,
+  },
 ];
 
 export type GuardrailResult = {
@@ -42,10 +61,15 @@ export type GuardrailResult = {
 };
 
 export function checkAnswer(text: string): GuardrailResult {
-  const hits = RULES.filter((rule) => rule.pattern.test(text));
-  return {
-    ok: hits.length === 0,
-    violations: hits.map((r) => r.id),
-    labels: hits.map((r) => r.label),
-  };
+  const violations = RULES.filter((rule) => rule.pattern.test(text));
+  const labels = violations.map((r) => r.label);
+  const ids = violations.map((r) => r.id);
+
+  // Длина ловит утечку рассуждений даже там, где формулировки нам незнакомы.
+  if (text.length > MAX_REPLY_LENGTH && !ids.includes('reasoning_leak')) {
+    ids.push('reasoning_leak');
+    labels.push('ответ слишком длинный для реплики в переписке');
+  }
+
+  return { ok: ids.length === 0, violations: ids, labels };
 }
